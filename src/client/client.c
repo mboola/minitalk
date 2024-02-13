@@ -4,19 +4,17 @@
 static void	convert_and_send_bits(int server_pid, char c)
 {
 	char	bits;
-	unsigned char	mask;
 
-	mask = 1;
 	bits = 8;
 	while (bits > 0)
 	{
-		//printf("%u ", c & 0x1);
 		if (c & 0x1)
-			kill(server_pid, SIGURS1);
+			kill(server_pid, SIGUSR1);
 		else
-			kill(server_pid, SIGURS2);
+			kill(server_pid, SIGUSR2);
 		c >>= 1;
 		bits--;
+		usleep(100);
 	}
 }
 
@@ -40,6 +38,8 @@ int main(int argc, char **argv)
 			convert_and_send_bits(server_pid, *str);
 			str++;
 		}
+		convert_and_send_bits(server_pid, '\n');
+		convert_and_send_bits(server_pid, '\0');
 	}
 	return (0);
 }

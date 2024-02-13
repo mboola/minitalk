@@ -6,15 +6,14 @@ static void	convert_bits(int sig, siginfo_t *info, void *ucontext)
 	static char				c = 0;
 	static unsigned char	bits = 0;
 
-	if (bits == 7)
-	{
-		ft_print(1, "%c", c);
-		c = 0;
-		bits == 0;
-	}
-	c |= (sig == SIGURS1);
+	c |= ((sig == SIGUSR1) << bits);
 	bits++;
-	c <<= 1;
+	if (bits == 8)
+	{
+		ft_printf(1, "%c", c);
+		bits = 0;
+		c = 0;
+	}
 }
 
 /*
@@ -31,7 +30,7 @@ int	main(void)
 	struct	sigaction	s_sigaction;
 
 	server_pid = (int)getpid();
-	ft_printf(1, "%d\n", served_pid);
+	ft_printf(1, "%d\n", server_pid);
 	s_sigaction.sa_sigaction = convert_bits;
 	s_sigaction.sa_flags = SA_SIGINFO;
 	sigaction(SIGUSR1, &s_sigaction, 0);
