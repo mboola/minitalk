@@ -1,35 +1,45 @@
 
 #include "minitalk.h"
 
-long client_id = 0;
-
-static void	send_msg(long server_pid, char *str, long client_id)
+static void	convert_and_send_bits(int server_pid, char c)
 {
-	size_t	len;
-	size_t	i;
+	char	bits;
+	unsigned char	mask;
 
-	len = ft_strlen(str);
-	i = 0;
-	start_msg();
-	while (i < len)
+	mask = 1;
+	bits = 8;
+	while (bits > 0)
 	{
-		mask_and_send_msg(*(str + i), client_id);
-		i++;
+		//printf("%u ", c & 0x1);
+		if (c & 0x1)
+			kill(server_pid, SIGURS1);
+		else
+			kill(server_pid, SIGURS2);
+		c >>= 1;
+		bits--;
 	}
-	end_msg();
 }
 
+/*
+ *	Client will be executed with two arguments: server_pid and string to send.
+ *	If the arguments are not valid, comunication does not start.
+ *	Client converts each character to bits and sends them one by one
+ *	using the signals SIGURS1 (bit 1) or SIGUSR2 (bit 0).
+ */
 int main(int argc, char **argv)
 {
 	long	server_pid;
-	long	curr_client_id;
+	char	*str;
 
-	if (argc == 3)
+	if (argc == 3 && argv[2][0] != '\0')
 	{
-		curr_client_id = client_id;
-		client_id++;
-		server_pid = convert_pid(argv[1]);
-		send_msg(server_pid, argv[2], client_id);
+		server_pid = ft_atoi(argv[1]);
+		str = argv[2];
+		while (*str != '\0')
+		{
+			convert_and_send_bits(server_pid, *str);
+			str++;
+		}
 	}
 	return (0);
 }
