@@ -1,18 +1,44 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   server.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mpovill- <mpovill-@student.42barcel>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/13 11:01:48 by mpovill-          #+#    #+#             */
+/*   Updated: 2023/09/13 11:01:58 by mpovill-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "minitalk.h"
+
+t_timeout	g_timeout;
 
 static void	convert_bits(int sig, siginfo_t *info, void *ucontext)
 {
 	static char				c = 0;
 	static unsigned char	bits = 0;
+	int						err;
 
+	if (!g_timeout.activated)
+	{
+		c = 0;
+		bits = 0;
+		g_timeout.activated = 1;
+	}
+	g_timeout.cycles = 0;
 	c |= ((sig == SIGUSR1) << bits);
 	bits++;
 	if (bits == 8)
 	{
-		ft_printf(1, "%c", c);
-		bits = 0;
-		c = 0;
+		if (c == END_CHAR)
+			g_timeout.activated = 0;
+		else
+		{
+			ft_putchar_err(1, c, &err);
+			bits = 0;
+			c = 0;
+		}
 	}
 }
 
@@ -26,8 +52,8 @@ static void	convert_bits(int sig, siginfo_t *info, void *ucontext)
  */
 int	main(void)
 {
-	int		server_pid;
-	struct	sigaction	s_sigaction;
+	int					server_pid;
+	struct sigaction	s_sigaction;
 
 	server_pid = (int)getpid();
 	ft_printf(1, "%d\n", server_pid);
@@ -35,7 +61,17 @@ int	main(void)
 	s_sigaction.sa_flags = SA_SIGINFO;
 	sigaction(SIGUSR1, &s_sigaction, 0);
 	sigaction(SIGUSR2, &s_sigaction, 0);
-	while(1)
-		pause();
+	g_timeout.activated = 0;
+	g_timeout.cycles = 0;
+	while (1)
+	{
+		usleep(10);
+		if (g_timeout.activated)
+		{
+			g_timeout.cycles++;
+			if (g_timeout.cycles == MAX_TIMEOUT)
+				g_timeout.activated = 0;
+		}
+	}
 	return (0);
 }

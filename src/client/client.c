@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   client.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mpovill- <mpovill-@student.42barcel>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/13 11:01:48 by mpovill-          #+#    #+#             */
+/*   Updated: 2023/09/13 11:01:58 by mpovill-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "minitalk.h"
 
@@ -24,7 +35,7 @@ static void	convert_and_send_bits(int server_pid, char c)
  *	Client converts each character to bits and sends them one by one
  *	using the signals SIGURS1 (bit 1) or SIGUSR2 (bit 0).
  */
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
 	long	server_pid;
 	char	*str;
@@ -39,7 +50,7 @@ int main(int argc, char **argv)
 			str++;
 		}
 		convert_and_send_bits(server_pid, '\n');
-		convert_and_send_bits(server_pid, '\0');
+		convert_and_send_bits(server_pid, END_CHAR);
 	}
 	return (0);
 }
