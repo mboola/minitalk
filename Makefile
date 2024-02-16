@@ -74,7 +74,7 @@ all: ${OBJ_DIR} ${LIBFT} ${NAME}
 ${NAME}: ${SERVER} ${CLIENT}
 	@echo "Compilating minitalk."
 
-bonus: ${SERVER_BONUS} ${CLIENT_BONUS}
+bonus: ${OBJ_DIR} ${LIBFT} ${SERVER_BONUS} ${CLIENT_BONUS}
 
 ${SERVER}: ${SERVER_FILES}
 	${CC} ${SERVER_FILES} ${LIBFT_LINK} -o $@ ${DEBUG}
