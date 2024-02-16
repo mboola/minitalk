@@ -12,20 +12,42 @@
 
 #include "minitalk.h"
 
+char	g_ack;
+
+static void	process_response(int sig, siginfo_t *info, void *ucontext)
+{
+	if (sig == SIGUSR1)
+	{
+		ft_printf(1, "ACK'd.\n");
+		g_ack = 1;
+	}
+}
+
+static void	wait_for_response(void)
+{
+	if (!g_ack)
+		pause();
+}
+
 static void	convert_and_send_bits(int server_pid, char c)
 {
-	char	bits;
+	char				bits;
+	struct sigaction	s_sigaction;
 
+	s_sigaction.sa_sigaction = process_response;
+	s_sigaction.sa_flags = SA_SIGINFO;
+	sigaction(SIGUSR1, &s_sigaction, 0);
 	bits = 8;
 	while (bits > 0)
 	{
+		g_ack = 0;
 		if (c & 0x1)
 			kill(server_pid, SIGUSR1);
 		else
 			kill(server_pid, SIGUSR2);
 		c >>= 1;
 		bits--;
-		usleep(100);
+		wait_for_response();
 	}
 }
 

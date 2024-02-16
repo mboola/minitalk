@@ -40,6 +40,7 @@ static void	convert_bits(int sig, siginfo_t *info, void *ucontext)
 			c = 0;
 		}
 	}
+	kill(info->si_pid, SIGUSR1);
 }
 
 /*
