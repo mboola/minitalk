@@ -13,6 +13,8 @@
 NAME	=	minitalk
 SERVER	=	server
 CLIENT	=	client
+SERVER_BONUS	=	server_bonus
+CLIENT_BONUS	=	client_bonus
 
 #------------------------------------------------------------------------------
 #	MAIN DIRECTORIES
@@ -46,16 +48,20 @@ LIBFT_LINK		=	-L./${LIBFT_DIR} -lft
 #------------------------------------------------------------------------------
 MINITALK_HEADER	=	${INCLUDE}/minitalk.h
 
-SERVER_DIR	=	server
-CLIENT_DIR	=	client
 SERVER_SRC	=	server.c
 CLIENT_SRC	=	client.c
+SERVER_SRC_BONUS	=	server_bonus.c
+CLIENT_SRC_BONUS	=	client_bonus.c
 
 #------------------------------------------------------------------------------
 #	RULE TO GET THE .O COMPILED
 #------------------------------------------------------------------------------
 SERVER_FILES	=	${patsubst %.c,${OBJ_DIR}/%.o,${notdir ${SERVER_SRC}}}
 CLIENT_FILES	=	${patsubst %.c,${OBJ_DIR}/%.o,${notdir ${CLIENT_SRC}}}
+SERVER_FILES_BONUS	=	${patsubst %.c,${OBJ_DIR}/%.o,${notdir ${SERVER_SRC_BONUS}}}
+CLIENT_FILES_BONUS	=	${patsubst %.c,${OBJ_DIR}/%.o,${notdir ${CLIENT_SRC_BONUS}}}
+
+OBJ_FILES	=	${SERVER_FILES} ${CLIENT_FILES} ${SERVER_FILES_BONUS} ${CLIENT_FILES_BONUS}
 
 ${OBJ_DIR}/%.o: ${SRC}/*/%.c Makefile
 	$(CC) ${CFLAGS} ${HEADERS} ${OPTIMIZATION} -c $< -o $@ ${DEBUG}
@@ -68,11 +74,19 @@ all: ${OBJ_DIR} ${LIBFT} ${NAME}
 ${NAME}: ${SERVER} ${CLIENT}
 	@echo "Compilating minitalk."
 
+bonus: ${SERVER_BONUS} ${CLIENT_BONUS}
+
 ${SERVER}: ${SERVER_FILES}
 	${CC} ${SERVER_FILES} ${LIBFT_LINK} -o $@ ${DEBUG}
 
 ${CLIENT}: ${CLIENT_FILES}
 	${CC} ${CLIENT_FILES} ${LIBFT_LINK} -o $@ ${DEBUG}
+
+${SERVER_BONUS}: ${SERVER_FILES_BONUS}
+	${CC} ${SERVER_FILES_BONUS} ${LIBFT_LINK} -o $@ ${DEBUG}
+
+${CLIENT_BONUS}: ${CLIENT_FILES_BONUS}
+	${CC} ${CLIENT_FILES_BONUS} ${LIBFT_LINK} -o $@ ${DEBUG}
 
 ${LIBFT}:
 	@echo "Compilating libft."
@@ -90,6 +104,8 @@ fclean: clean
 	@make fclean -C ${LIBFT_DIR}
 	@rm -f ${SERVER}
 	@rm -f ${CLIENT}
+	@rm -f ${SERVER_BONUS}
+	@rm -f ${CLIENT_BONUS}
 
 re: fclean all
 
@@ -100,5 +116,5 @@ ${OBJ_DIR}:
 	@echo "Creating objects file directory."
 	@mkdir -p $@
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re bonus
 
