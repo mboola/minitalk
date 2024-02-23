@@ -37,6 +37,7 @@ CFLAGS			=	-Wall -Wextra -Werror
 HEADERS			=	-I./${INCLUDE}
 OPTIMIZATION	=	-O3
 DEBUG			=	#-g
+MMD				=	-MMD -MD
 
 #------------------------------------------------------------------------------
 #	LINKING LIBRARIES
@@ -69,23 +70,26 @@ ${OBJ_DIR}/%.o: ${SRC}/*/%.c ${MINITALK_HEADER} Makefile
 #------------------------------------------------------------------------------
 #	MAIN RULES TO COMPILE AND CREATE THE EXECUTABLE AND TO CLEAN IT
 #------------------------------------------------------------------------------
-all: ${OBJ_DIR} ${LIBFT} ${NAME}
+all: make_libs ${OBJ_DIR} ${NAME}
+
+make_libs:
+	@make -C ${LIBFT_DIR}
 
 ${NAME}: ${SERVER} ${CLIENT}
 	@echo "Compilating minitalk."
 
-bonus: ${OBJ_DIR} ${LIBFT} ${SERVER_BONUS} ${CLIENT_BONUS}
+bonus: make_libs ${OBJ_DIR} ${SERVER_BONUS} ${CLIENT_BONUS}
 
-${SERVER}: ${SERVER_FILES}
+${SERVER}: ${SERVER_FILES} ${LIBFT} 
 	${CC} ${SERVER_FILES} ${LIBFT_LINK} -o $@ ${DEBUG}
 
-${CLIENT}: ${CLIENT_FILES}
+${CLIENT}: ${CLIENT_FILES} ${LIBFT}
 	${CC} ${CLIENT_FILES} ${LIBFT_LINK} -o $@ ${DEBUG}
 
-${SERVER_BONUS}: ${SERVER_FILES_BONUS}
+${SERVER_BONUS}: ${SERVER_FILES_BONUS} ${LIBFT} 
 	${CC} ${SERVER_FILES_BONUS} ${LIBFT_LINK} -o $@ ${DEBUG}
 
-${CLIENT_BONUS}: ${CLIENT_FILES_BONUS}
+${CLIENT_BONUS}: ${CLIENT_FILES_BONUS} ${LIBFT} 
 	${CC} ${CLIENT_FILES_BONUS} ${LIBFT_LINK} -o $@ ${DEBUG}
 
 ${LIBFT}:
@@ -117,4 +121,3 @@ ${OBJ_DIR}:
 	@mkdir -p $@
 
 .PHONY: all clean fclean re bonus
-
