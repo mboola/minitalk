@@ -33,9 +33,9 @@ LIBFT			=	${LIBFT_DIR}/libft.a
 #	COMPILATION FLAGS
 #------------------------------------------------------------------------------
 CC				=	cc
-CFLAGS			=	-Wall #-Wextra -Werror
+CFLAGS			=	-Wall -Wextra -Werror
 HEADERS			=	-I./${INCLUDE}
-OPTIMIZATION	=	#-O3
+OPTIMIZATION	=	-O3
 DEBUG			=	#-g
 
 #------------------------------------------------------------------------------
@@ -63,7 +63,7 @@ CLIENT_FILES_BONUS	=	${patsubst %.c,${OBJ_DIR}/%.o,${notdir ${CLIENT_SRC_BONUS}}
 
 OBJ_FILES	=	${SERVER_FILES} ${CLIENT_FILES} ${SERVER_FILES_BONUS} ${CLIENT_FILES_BONUS}
 
-${OBJ_DIR}/%.o: ${SRC}/*/%.c Makefile
+${OBJ_DIR}/%.o: ${SRC}/*/%.c ${MINITALK_HEADER} Makefile
 	$(CC) ${CFLAGS} ${HEADERS} ${OPTIMIZATION} -c $< -o $@ ${DEBUG}
 
 #------------------------------------------------------------------------------

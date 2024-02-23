@@ -1,34 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minitalk.h                                         :+:      :+:    :+:   */
+/*   ft_strlenchr.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mpovill- <mpovill-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/13 11:01:48 by mpovill-          #+#    #+#             */
-/*   Updated: 2023/09/13 11:01:58 by mpovill-         ###   ########.fr       */
+/*   Created: 2023/09/13 10:44:40 by mpovill-          #+#    #+#             */
+/*   Updated: 2023/09/13 10:45:02 by mpovill-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINITALK_H
-# define MINITALK_H
+#include "libft.h"
 
-# include <unistd.h>
-# include <signal.h>
-# include "../ft_libft/include/libft.h"
-
-# ifndef MAX_TIMEOUT
-#  define MAX_TIMEOUT 1000
-# endif
-
-# ifndef END_CHAR
-#  define END_CHAR '\0'
-# endif
-
-typedef struct s_timeout
+size_t	ft_strlenchr(char *str, char c)
 {
-	char	activated;
-	int		cycles;
-}	t_timeout;
+	size_t	count;
 
-#endif
+	if (str == NULL)
+		return (0);
+	count = 0;
+	if (c == '\0')
+	{
+		while (*(str + count) != '\0')
+			count++;
+	}
+	else
+	{
+		while (*(str + count) != '\0' && *(str + count) != c)
+			count++;
+	}
+	if (*(str + count) == c)
+		return (count);
+	return (0);
+}

@@ -1,34 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minitalk.h                                         :+:      :+:    :+:   */
+/*   ft_striteri.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mpovill- <mpovill-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/13 11:01:48 by mpovill-          #+#    #+#             */
-/*   Updated: 2023/09/13 11:01:58 by mpovill-         ###   ########.fr       */
+/*   Created: 2023/09/13 11:12:52 by mpovill-          #+#    #+#             */
+/*   Updated: 2023/09/13 11:12:59 by mpovill-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINITALK_H
-# define MINITALK_H
+#include "libft.h"
 
-# include <unistd.h>
-# include <signal.h>
-# include "../ft_libft/include/libft.h"
-
-# ifndef MAX_TIMEOUT
-#  define MAX_TIMEOUT 1000
-# endif
-
-# ifndef END_CHAR
-#  define END_CHAR '\0'
-# endif
-
-typedef struct s_timeout
+void	ft_striteri(char *s, void (*f)(unsigned int, char*))
 {
-	char	activated;
-	int		cycles;
-}	t_timeout;
+	size_t	count;
 
-#endif
+	if (s == NULL || f == NULL)
+		return ;
+	count = 0;
+	while (*(s + count) != '\0')
+	{
+		(*f)(count, s + count);
+		count++;
+	}
+}

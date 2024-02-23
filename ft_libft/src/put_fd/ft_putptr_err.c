@@ -1,34 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minitalk.h                                         :+:      :+:    :+:   */
+/*   ft_putptr_err.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mpovill- <mpovill-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/13 11:01:48 by mpovill-          #+#    #+#             */
-/*   Updated: 2023/09/13 11:01:58 by mpovill-         ###   ########.fr       */
+/*   Created: 2023/09/14 12:11:32 by mpovill-          #+#    #+#             */
+/*   Updated: 2023/09/14 12:20:50 by mpovill-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINITALK_H
-# define MINITALK_H
+#include "libft.h"
 
-# include <unistd.h>
-# include <signal.h>
-# include "../ft_libft/include/libft.h"
-
-# ifndef MAX_TIMEOUT
-#  define MAX_TIMEOUT 1000
-# endif
-
-# ifndef END_CHAR
-#  define END_CHAR '\0'
-# endif
-
-typedef struct s_timeout
+int	ft_putptr_err(int fd, void *ptr, int *err)
 {
-	char	activated;
-	int		cycles;
-}	t_timeout;
+	unsigned long	addr;
 
-#endif
+	ft_putstr_err(fd, "0x", err);
+	if (!*err)
+	{
+		addr = (unsigned long)ptr;
+		return (ft_putnbr_long_err(fd, addr, HEXLOWBASE, err) + 2);
+	}
+	return (0);
+}

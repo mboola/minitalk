@@ -1,34 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minitalk.h                                         :+:      :+:    :+:   */
+/*   ft_isalnum.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mpovill- <mpovill-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/13 11:01:48 by mpovill-          #+#    #+#             */
-/*   Updated: 2023/09/13 11:01:58 by mpovill-         ###   ########.fr       */
+/*   Created: 2023/09/13 10:40:32 by mpovill-          #+#    #+#             */
+/*   Updated: 2023/09/13 10:41:28 by mpovill-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINITALK_H
-# define MINITALK_H
+#include "libft.h"
 
-# include <unistd.h>
-# include <signal.h>
-# include "../ft_libft/include/libft.h"
-
-# ifndef MAX_TIMEOUT
-#  define MAX_TIMEOUT 1000
-# endif
-
-# ifndef END_CHAR
-#  define END_CHAR '\0'
-# endif
-
-typedef struct s_timeout
+int	ft_isalnum(int c)
 {
-	char	activated;
-	int		cycles;
-}	t_timeout;
-
-#endif
+	if (ft_isalpha(c) || ft_isdigit(c))
+		return (1);
+	return (0);
+}

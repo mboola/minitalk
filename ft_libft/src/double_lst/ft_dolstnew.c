@@ -1,34 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minitalk.h                                         :+:      :+:    :+:   */
+/*   ft_dolstnew.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mpovill- <mpovill-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/13 11:01:48 by mpovill-          #+#    #+#             */
-/*   Updated: 2023/09/13 11:01:58 by mpovill-         ###   ########.fr       */
+/*   Created: 2023/09/13 11:16:56 by mpovill-          #+#    #+#             */
+/*   Updated: 2023/09/13 11:17:03 by mpovill-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINITALK_H
-# define MINITALK_H
+#include "libft.h"
 
-# include <unistd.h>
-# include <signal.h>
-# include "../ft_libft/include/libft.h"
-
-# ifndef MAX_TIMEOUT
-#  define MAX_TIMEOUT 1000
-# endif
-
-# ifndef END_CHAR
-#  define END_CHAR '\0'
-# endif
-
-typedef struct s_timeout
+t_dlist	*ft_dolstnew(void *content)
 {
-	char	activated;
-	int		cycles;
-}	t_timeout;
+	t_dlist	*node;
 
-#endif
+	node = malloc(sizeof(t_dlist));
+	if (node == NULL)
+		return (NULL);
+	node->content = content;
+	node->next = NULL;
+	node->previous = NULL;
+	return (node);
+}

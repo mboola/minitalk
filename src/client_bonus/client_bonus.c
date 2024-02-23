@@ -16,6 +16,8 @@ char	g_ack;
 
 static void	process_response(int sig, siginfo_t *info, void *ucontext)
 {
+	(void)info;
+	(void)ucontext;
 	if (sig == SIGUSR1)
 	{
 		ft_printf(1, "ACK'd.\n");
@@ -65,6 +67,8 @@ int	main(int argc, char **argv)
 	if (argc == 3 && argv[2][0] != '\0')
 	{
 		server_pid = ft_atoi(argv[1]);
+		if (server_pid < 1)
+			return (0);
 		str = argv[2];
 		while (*str != '\0')
 		{

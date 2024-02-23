@@ -1,34 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minitalk.h                                         :+:      :+:    :+:   */
+/*   ft_putnbr_err.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mpovill- <mpovill-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/13 11:01:48 by mpovill-          #+#    #+#             */
-/*   Updated: 2023/09/13 11:01:58 by mpovill-         ###   ########.fr       */
+/*   Created: 2023/09/13 11:16:13 by mpovill-          #+#    #+#             */
+/*   Updated: 2023/09/13 11:16:20 by mpovill-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINITALK_H
-# define MINITALK_H
+#include "libft.h"
 
-# include <unistd.h>
-# include <signal.h>
-# include "../ft_libft/include/libft.h"
-
-# ifndef MAX_TIMEOUT
-#  define MAX_TIMEOUT 1000
-# endif
-
-# ifndef END_CHAR
-#  define END_CHAR '\0'
-# endif
-
-typedef struct s_timeout
+int	ft_putnbr_err(int fd, int num, char *base, int *err)
 {
-	char	activated;
-	int		cycles;
-}	t_timeout;
+	unsigned int	number;
+	int				count;
 
-#endif
+	count = 0;
+	if (num < 0)
+	{
+		count += ft_putchar_err(fd, '-', err);
+		number = num * -1;
+	}
+	else
+		number = num;
+	if (*err)
+		return (count);
+	return (count + ft_putunsnbr_err(fd, number, base, err));
+}

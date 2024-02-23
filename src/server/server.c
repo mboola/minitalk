@@ -14,16 +14,23 @@
 
 t_timeout	g_timeout;
 
+static void	reset_values(char *c, unsigned char *bits)
+{
+	*c = 0;
+	*bits = 0;
+}
+
 static void	convert_bits(int sig, siginfo_t *info, void *ucontext)
 {
 	static char				c = 0;
 	static unsigned char	bits = 0;
 	int						err;
 
+	(void)info;
+	(void)ucontext;
 	if (!g_timeout.activated)
 	{
-		c = 0;
-		bits = 0;
+		reset_values(&c, &bits);
 		g_timeout.activated = 1;
 	}
 	g_timeout.cycles = 0;
@@ -36,8 +43,7 @@ static void	convert_bits(int sig, siginfo_t *info, void *ucontext)
 		else
 		{
 			ft_putchar_err(1, c, &err);
-			bits = 0;
-			c = 0;
+			reset_values(&c, &bits);
 		}
 	}
 }

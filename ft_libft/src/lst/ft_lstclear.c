@@ -1,34 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minitalk.h                                         :+:      :+:    :+:   */
+/*   ft_lstclear_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mpovill- <mpovill-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/13 11:01:48 by mpovill-          #+#    #+#             */
-/*   Updated: 2023/09/13 11:01:58 by mpovill-         ###   ########.fr       */
+/*   Created: 2023/09/13 11:22:04 by mpovill-          #+#    #+#             */
+/*   Updated: 2023/09/13 11:22:11 by mpovill-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINITALK_H
-# define MINITALK_H
+#include "libft.h"
 
-# include <unistd.h>
-# include <signal.h>
-# include "../ft_libft/include/libft.h"
-
-# ifndef MAX_TIMEOUT
-#  define MAX_TIMEOUT 1000
-# endif
-
-# ifndef END_CHAR
-#  define END_CHAR '\0'
-# endif
-
-typedef struct s_timeout
+void	ft_lstclear(t_list **lst, void (*del)(void *))
 {
-	char	activated;
-	int		cycles;
-}	t_timeout;
+	t_list	*tmp;
 
-#endif
+	if (lst == NULL || *lst == NULL || del == NULL)
+		return ;
+	tmp = *lst;
+	while (tmp->next != NULL)
+	{
+		*lst = (*lst)->next;
+		ft_lstdelone(tmp, del);
+		tmp = *lst;
+	}
+	ft_lstdelone(tmp, del);
+	*lst = NULL;
+}
